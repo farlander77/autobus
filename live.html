@@ -127,7 +127,7 @@ const STOP_SCALE=1;
 const LINE_WIDTH=11;
 const LAYOUT="card";
 const FEEDS=[{"id":"s1","url":"https://wa-smart-busstop-v2.azurewebsites.net/api/Phase4/getCmServiceBus?licsno=PA4","primary":true}];
-const FEED={"mode":"distance","primary":"s1","listPath":"data.goThrouth","etaType":"seconds","fields":{"sort":"sort","arrived":"arrived","distNext":"distanceToNextPoint","distStop":"distanceToStop","percent":"","eta":"","stopLat":"lat","stopLon":"lon","success":"isSuccess","plate":"","busLat":"","busLon":"","now":"","etaType":"seconds"},"src":{"success":"","plate":"","busLat":"","busLon":"","now":""}};
+const FEED={"mode":"distance","primary":"s1","listPath":"data.goThrouth","etaType":"seconds","fields":{"sort":"sort","arrived":"arrived","distNext":"distanceToNextPoint","distStop":"distanceToStop","percent":"","eta":"","stopLat":"","stopLon":"","success":"isSuccess","plate":"data.id","busLat":"","busLon":"","now":"","etaType":"seconds"},"src":{"success":"","plate":"","busLat":"","busLon":"","now":""}};
 const CORNER_R=10;
 const STOPS={
   water:{x:705,y:256,lx:739,ly:205,nx:709,ny:205,name:"水湳轉運中心",num:"1"},
