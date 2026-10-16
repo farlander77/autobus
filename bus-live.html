@@ -147,7 +147,7 @@ const BUS_FX="multi";
 const BUS_STYLE="arrow";
 const BUS_ICON_SVG="";
 const BUS_ARROW_SVG="";
-const BUS_SCALE=1;
+const BUS_SCALE=1.5;
 const BUS_BG="#f9a825";
 const BUS_FG="#3a2700";
 const BUS_STROKE="#ffffff";
@@ -155,7 +155,7 @@ const BUS_STROKE_W=5;
 const BUS_NO_CORE=false;
 const BUS_NO_RING=false;
 const BUS_RING_W=6;
-const LABEL_SCALE=1;
+const LABEL_SCALE=2;
 const STOP_SCALE=1;
 const STOP_COLOR="#2b5c88";
 const LABEL_COLOR="#17233f";
@@ -167,12 +167,12 @@ const FEED_URL="https://wa-smart-busstop-v2.azurewebsites.net/api/Phase4/getCmSe
 const FEED={"mode":"distance","listPath":"data.goThrouth","fields":{"sort":"sort","stopId":"stopId","stopName":"stopName","arrived":"arrived","distNext":"distanceToStop","distStop":"distanceToNextPoint","percent":"","eta":"estEpoch","stopLat":"lat","stopLon":"lon","busLat":"","busLon":"","now":"data.epochtime","plate":"data.id","success":"isSuccess"},"etaType":"epoch","distAlgo":"segment","onNoMatch":"best"};
 const CORNER_R=10;
 const STOPS={
-  water:{x:705,y:256,lx:739,ly:205,nx:709,ny:205,name:"水湳轉運中心",num:"1",apiId:"16619"},
-  park_o:{x:837,y:1254,lx:522,ly:1261,nx:783,ny:1256,name:"臺中中央公園(去)",num:"2",apiId:"16618"},
-  wenhua:{x:1013,y:1877,lx:1090,ly:1900,nx:1060,ny:1900,name:"捷運文華高中站",num:"3",apiId:"16620"},
-  park_r:{x:869,y:1255,lx:950,ly:1261,nx:920,ny:1258,name:"臺中中央公園(返)",num:"4",apiId:"16622"},
-  green:{x:819,y:527,lx:590,ly:535,nx:770,ny:531,name:"臺中綠美圖",num:"5",apiId:"16621"},
-  liming:{x:764,y:367,lx:871,ly:370,nx:841,ny:370,name:"黎明經貿路口(會展中心)",num:"6",apiId:"16623"},
+  water:{x:705,y:256,lx:733,ly:161,nx:675,ny:148,name:"水湳轉運中心",num:"1",apiId:"16619"},
+  park_o:{x:837,y:1254,lx:245,ly:1255,nx:758,ny:1253,name:"臺中中央公園(去)",num:"2",apiId:"16618"},
+  wenhua:{x:1013,y:1877,lx:1134,ly:1907,nx:1047,ny:1898,name:"捷運文華高中站",num:"3",apiId:"16620"},
+  park_r:{x:869,y:1255,lx:994,ly:1255,nx:948,ny:1249,name:"臺中中央公園(返)",num:"4",apiId:"16622"},
+  green:{x:819,y:527,lx:379,ly:535,nx:732,ny:531,name:"臺中綠美圖",num:"5",apiId:"16621"},
+  liming:{x:764,y:367,lx:911,ly:385,nx:865,ny:379,name:"黎明經貿路口(會展中心)",num:"6",apiId:"16623"},
 };
 const ROUTES=[
   {name:"路線1",mode:"split",col:{"go":"#ec2c8a","back":"#2aa9ff","single":"#7c3aed"},
