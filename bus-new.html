@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head >
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1,requiresActiveX=true" />
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="css/css.css" />
+	<link rel="stylesheet" href="css/bootstrap-custom.css" />
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="jss/modal.js"></script>
+
+
+    <title>水湳號自駕巴士預約系統平台</title>
+
+    <script type="text/javascript">
+	$(document).ready(function() {
+	$('body').hide().fadeIn(500);
+	});
+	</script>
+
+	<style>
+	/* ===== 列表 / 地圖 切換 ===== */
+	.view-toggle{
+		display:flex;
+		width:max-content;
+		margin:0 auto 12px;
+		padding:4px;
+		border-radius:999px;
+		background:#364A56;
+		gap:4px;
+	}
+	.view-toggle button{
+		border:none;
+		background:none;
+		color:#cfd8ea;
+		font-size:15px;
+		font-weight:700;
+		padding:7px 18px;
+		border-radius:999px;
+		cursor:pointer;
+		transition:background .25s,color .25s;
+	}
+	.view-toggle button.on{
+		background:#f9a825;
+		color:#3a2700;
+	}
+	.view-panel{ display:none; }
+	.view-panel.on{ display:block; animation:viewFade .35s ease; }
+	@keyframes viewFade{ from{opacity:0;} to{opacity:1;} }
+
+	/* 地圖 iframe:依 bus-live 的 SVG 比例 (1692 x 2007) 自動算高度 */
+	.bus-live-frame{
+		display:block;
+		width:100%;
+		aspect-ratio:1692 / 2007;
+		border:0;
+		border-radius:12px;
+		background:#dcdcdc;
+	}
+	</style>
+	
+</head>
+<body>
+<div class="page">
+
+<header class="header">
+	<img src="images/logo.png" alt=""/>
+</header>
+	
+<div class="content">
+    
+
+	
+<div class="inside-area">
+
+	<!-- 切換按鈕 -->
+
+
+	<!-- 原本的列表內容 -->
+	<div class="view-panel on" id="view-list">
+	<div class="inside-body-dark" >
+	<div class="bus-station-name">臺中中央公園站</div>
+		
+	<div class="bus-information-area">
+	<span class="bus-information-name"><i class="fa fa-bus"></i> A車 ABC-XXXX</span>	
+	<span class="bus-information-status">即將進站</span>	
+	</div>
+		
+	<div class="bus-info-area">
+        
+        <div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">水湳轉運中心</div>
+		<div class="bus"> 
+			<span class="bus-outward">ABC-1234</span>
+		</div>
+		</div>
+		</div>
+        
+		<div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">臺中中央公園(去)</div>
+		<div class="bus"> 
+			<span class="bus-time-soon">即將進站</span>
+		</div>
+		</div>
+		</div>
+		
+		
+		<div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">捷運文華高中站</div>	
+        <div class="bus"> 
+			<span class="bus-time">5分</span>
+		</div>
+		</div>
+		</div>	
+		
+		<div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">臺中中央公園(返)</div>
+        <div class="bus"> 
+			<span class="bus-time">10分</span>
+		</div>
+		</div>
+		</div>
+		
+		<div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">臺中綠美圖</div>
+        <div class="bus"> 
+			<span class="bus-time">15分</span>
+		</div>
+		</div>
+		</div>	
+		
+		<div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">黎明經貿路口(會展中心)</div>
+        <div class="bus"> 
+			<span class="bus-time">20分</span>
+		</div>
+		</div>
+		</div>	
+        
+        <div class="bus-info-section">
+		<div class="bus-info-item">
+		<div class="bus-info-title">水湳轉運中心</div>
+        <div class="bus"> 
+			<span class="bus-time">25分</span>
+		</div>
+		</div>
+		</div>	
+	</div>
+	</div>
+	</div>
+
+	<!-- 即時地圖 (iframe 嵌入 bus-live.html,第一次切換時才載入) -->
+	<div class="view-panel" id="view-map">
+		<iframe class="bus-live-frame" id="busLiveFrame" data-src="bus-live.html" title="公車即時動態" loading="lazy"></iframe>
+	</div>
+
+</div>
+    
+	<div class="view-toggle">
+		<button type="button" class="on" data-view="list"><i class="fa fa-list"></i> 到站列表</button>
+		<button type="button" data-view="map"><i class="fa fa-map"></i> 即時地圖</button>
+	</div>
+
+<div class="build1"><img src="images/build1.png" width="300"  alt=""/></div>
+<div class="build2"><img src="images/build2.png" width="400"  alt=""/></div>
+<div class="build3"><img src="images/build3.png" width="300"  alt=""/></div>
+
+</div>
+<div class="footer">	
+<div class="btn-area">
+    <button class="btn-back" onClick="location.href='main.html'">返回</button>
+	<button class="btn-reserve" onClick="location.href='reserve.html'">預約</button>
+	<button class="btn-search" onClick="location.href='search.html'">預約查詢</button>
+</div>
+<div class="organizers">
+<span>主辦單位：臺中市政府交通局 ｜ 執行單位：勤崴國際</span>
+<span class="service-info">服務電話：02-2363-5445 ｜ 服務時間：週一到週五 <span class="service-time">(10:00 - 17:00)</span></span>
+</div>
+</div>
+</div>
+
+<script>
+// ===== 列表 / 地圖 切換 =====
+(function(){
+    const btns   = document.querySelectorAll('.view-toggle button');
+    const panels = { list: document.getElementById('view-list'), map: document.getElementById('view-map') };
+    const frame  = document.getElementById('busLiveFrame');
+
+    function showView(view){
+        if(!panels[view]) view = 'list';
+        btns.forEach(b => b.classList.toggle('on', b.dataset.view === view));
+        Object.keys(panels).forEach(k => panels[k].classList.toggle('on', k === view));
+
+        // 第一次切到地圖才載入 iframe,避免一開頁就多打一份 API
+        if(view === 'map' && !frame.getAttribute('src')){
+            frame.setAttribute('src', frame.dataset.src);
+        }
+        try{ localStorage.setItem('busView', view); }catch(e){}
+    }
+
+    btns.forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+
+    // 記住上次選的檢視
+    let saved = 'list';
+    try{ saved = localStorage.getItem('busView') || 'list'; }catch(e){}
+    showView(saved);
+})();
+</script>
+	
+<script>
+setInterval(() => {
+    const busElements = document.querySelectorAll('.bus');
+    const busData = [];
+
+    // 1. 取得目前所有站點的 HTML 內容
+    busElements.forEach(el => {
+        busData.push(el.innerHTML);
+    });
+
+    // 2. 執行順移
+    const lastData = busData.pop();
+    busData.unshift(lastData);
+
+    // 3. 找出車子現在所在的 index
+    let outwardIndex = -1;
+    busData.forEach((content, i) => {
+        if (content.includes('bus-outward')) {
+            outwardIndex = i;
+        }
+    });
+
+    // 4. 重新渲染，並透過 visibility 控制顯示/隱藏
+    busElements.forEach((el, index) => {
+        // 先淡出
+        el.style.opacity = 0;
+        
+        setTimeout(() => {
+            // 先把內容塞進去（確保內容始終存在於 DOM 中）
+            el.innerHTML = busData[index];
+
+            // 判斷邏輯：
+            // 如果車子在第一站 (index 0)，全部設為可見
+            if (outwardIndex === 0) {
+                el.style.visibility = 'visible';
+            } else {
+                // 如果目前的索引小於車子所在位置，設為隱藏 (但內容還在)
+                if (index < outwardIndex) {
+                    el.style.visibility = 'hidden';
+                } else {
+                    el.style.visibility = 'visible';
+                }
+            }
+            
+            // 再淡入
+            el.style.opacity = 1;
+        }, 200); 
+    });
+
+}, 2000); 
+</script>
+
+</body>
+</html>
