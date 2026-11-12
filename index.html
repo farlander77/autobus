@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en"><head >
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -56,12 +56,29 @@
     transform: translateX(-100%);
   }
 }
-        
+
+    /* ===== 懸浮 FAQ 按鈕 ===== */
+    .faq-float{
+      position:fixed;           /* 固定在視窗上，不隨捲動 */
+      right:0px; bottom:50px;  /* 初始位置 */
+      z-index:9999;
+      touch-action:none;        /* 手機拖曳時不觸發頁面捲動 */
+      user-select:none; -webkit-user-select:none;
+      cursor:grab;
+      /* 放開後的回彈動畫（cubic-bezier 第二個值 >1 會有過衝彈一下的效果） */
+      transition:left .45s cubic-bezier(.25,1.5,.5,1), top .45s cubic-bezier(.25,1.5,.5,1);
+    }
+    .faq-float.dragging{ transition:none; cursor:grabbing; }
+    .faq-float img{ display:block; -webkit-user-drag:none; pointer-events:none; }
 
     </style>
     
 </head>
 <body>
+
+<!-- 懸浮 FAQ：放在 body 第一層，避免被父層的 transform / overflow 影響 fixed 定位 -->
+<div class="faq-float" id="faqFloat" data-href="faq.html" role="button" tabindex="0" aria-label="常見問題"><img src="images/faq.png" width="120" alt="FAQ" draggable="false"/></div>
+
 <div class="page">
 
 <header class="header">
@@ -131,7 +148,144 @@ var swiper = new Swiper(".bannerSwiper", {
       });
       mapFrame.contentWindow.postMessage({ type: 'shuinan-mode', mode: btn.dataset.mode }, '*');
     });
-  });''
+  });
+</script>
+
+<script>
+/* ===== 可拖曳 + 自動吸邊的 FAQ 按鈕 ===== */
+(function () {
+  var el = document.getElementById('faqFloat');
+  if (!el) return;
+
+  var MARGIN = -10;        // 距離邊緣的間距
+  var DRAG_THRESHOLD = 5; // 移動超過幾 px 才算拖曳（避免點擊誤判）
+  var OVERSHOOT = 30;     // 拖曳時可超出邊界的距離
+  var pressing = false, moved = false;
+  var startX, startY, offX, offY;
+
+  // 吸附範圍：以 .page 的左右邊為界（桌機版內容置中時不會跑到內容外），否則用整個視窗
+  function bounds() {
+    var page = document.querySelector('.page');
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var left = 0, right = vw;
+    if (page) {
+      var pr = page.getBoundingClientRect();
+      left = Math.max(0, pr.left);
+      right = Math.min(vw, pr.right);
+    }
+    // 上下界：不超過 header 底部、不低於 footer 頂部
+    // （header / footer 捲出畫面時，就以視窗邊緣為界）
+    var top = 0, bottom = vh;
+    var header = document.querySelector('.header');
+    var footer = document.querySelector('.footer');
+    if (header) top = Math.max(0, header.getBoundingClientRect().bottom);
+    if (footer) bottom = Math.min(vh, footer.getBoundingClientRect().top);
+
+    // 可用空間比按鈕還小時（例如 header、footer 同時在畫面上又很擠），退回用整個視窗
+    if (bottom - top < el.offsetHeight + MARGIN * 2) { top = 0; bottom = vh; }
+
+    return { left: left, right: right, top: top, bottom: bottom };
+  }
+
+  function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+  function setPos(x, y) {
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+  }
+
+  // 把 right/bottom 初始定位轉成 left/top，方便後續計算
+  function initPos() {
+    var r = el.getBoundingClientRect();
+    el.style.right = 'auto';
+    el.style.bottom = 'auto';
+    setPos(r.left, r.top);
+    snap();
+  }
+
+  // 依按鈕中心點在左半或右半，回彈到該側
+  function snap() {
+    var b = bounds();
+    var r = el.getBoundingClientRect();
+    var center = r.left + r.width / 2;
+    var mid = (b.left + b.right) / 2;
+    var x = center < mid ? b.left + MARGIN : b.right - r.width - MARGIN;
+    var y = clamp(r.top, b.top + MARGIN, b.bottom - r.height - MARGIN);
+    setPos(x, y);
+  }
+
+  el.addEventListener('pointerdown', function (e) {
+    if (e.button !== undefined && e.button !== 0) return; // 只處理左鍵/觸控
+    pressing = true;
+    moved = false;
+    var r = el.getBoundingClientRect();
+    startX = e.clientX; startY = e.clientY;
+    offX = e.clientX - r.left;
+    offY = e.clientY - r.top;
+    el.setPointerCapture(e.pointerId);
+  });
+
+  el.addEventListener('pointermove', function (e) {
+    if (!pressing) return;
+    if (!moved) {
+      if (Math.abs(e.clientX - startX) < DRAG_THRESHOLD &&
+          Math.abs(e.clientY - startY) < DRAG_THRESHOLD) return;
+      moved = true;
+      el.classList.add('dragging'); // 拖曳中關閉動畫，跟手
+    }
+    var b = bounds();
+    var r = el.getBoundingClientRect();
+    // 拖曳時允許超出邊界 OVERSHOOT px，放開後由 snap() 彈回
+    var x = clamp(e.clientX - offX, b.left - OVERSHOOT, b.right - r.width + OVERSHOOT);
+    var y = clamp(e.clientY - offY, b.top - OVERSHOOT, b.bottom - r.height + OVERSHOOT);
+    setPos(x, y);
+  });
+
+  function go() {
+    var url = el.dataset.href;
+    if (url) location.href = url;
+  }
+
+  function release(isCancel) {
+    if (!pressing) return;
+    pressing = false;
+    el.classList.remove('dragging');
+    if (moved) {
+      snap();          // 有拖曳：彈回兩側，不換頁
+    } else if (!isCancel) {
+      go();            // 沒拖曳：視為點擊，換頁
+    }
+  }
+  el.addEventListener('pointerup', function () { release(false); });
+  el.addEventListener('pointercancel', function () { release(true); });
+
+  // 鍵盤操作（Tab 選到按鈕後按 Enter / 空白鍵）也能換頁
+  el.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      go();
+    }
+  });
+
+  // 視窗大小改變 / 手機轉向時重新吸邊
+  window.addEventListener('resize', snap);
+
+  // 捲動時 header / footer 位置會變，按鈕要跟著被推開（拖曳中不處理）
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (pressing || ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      snap();
+    });
+  }, { passive: true });
+
+  // 等圖片載入後才有正確尺寸
+  var img = el.querySelector('img');
+  if (img && !img.complete) img.addEventListener('load', initPos);
+  else initPos();
+})();
 </script>
 	
 </body>
