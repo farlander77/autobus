@@ -20,11 +20,6 @@
 	$(document).ready(function() {
 	$('body').hide().fadeIn(500);
 	});
-        
-        
-
-
-
 	</script>
     <style>
     .map-box{position:relative;width:100%;aspect-ratio:1692/2007}
@@ -35,6 +30,33 @@
     font-size:15px;font-weight:900;background:transparent;color:#2765af}
     .map-switch button[data-mode="full"].on{background:#2765af;color:#fff}
     .map-switch button[data-mode="int"].on{background:#8f41ff;color:#fff}
+        
+    
+      .marquee{
+  width:100%;
+  overflow:hidden;
+  padding:0 0 0px 0;
+    position: relative;
+    top: -4px;
+}
+
+.marquee-text{
+  display:inline-block;
+  white-space:nowrap;
+  padding-left:100%;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee{
+  from{
+    transform: translateX(0);
+  }
+  to{
+    transform: translateX(-100%);
+  }
+}
+        
+
     </style>
     
 </head>
@@ -55,7 +77,6 @@
         <div class="map-switch">
           <button type="button" data-mode="full" class="on">全程車</button>
           <button type="button" data-mode="int">區間車</button>
-            <div style="position: absolute; font-size: 12px; bottom: -20px; right: 10px; color: #333; display: none;">點擊按鈕可以切換路線</div>
         </div>
       </div>
     </div>
@@ -74,14 +95,18 @@
 </div>
 
 <div class="footer">
-
+<div class="marquee">
+  <div class="marquee-text">
+    本連結為預約系統概念測試，正式預約系統將於自駕巴士上路測試時另行公告。
+  </div>
+</div>
 <div class="btn-area">
 	<button class="btn-register" onClick="location.href='register.html'">註冊</button>
 	<button class="btn-login" onClick="location.href='login.html'">登入</button>
 </div>
 <div class="organizers">
 <span>主辦單位：臺中市政府交通局 ｜ 執行單位：勤崴國際</span>
-<span class="service-info">服務電話：02-2363-5445 ｜ 服務時間：週一到週五 <span class="service-time">(10:00 - 17:00)</span> </span>
+<span class="service-info">服務電話：02-23630582 ｜ 服務時間：週一到週五 <span class="service-time">(10:00 - 17:00)</span> </span>
 </div>
 </div>
 
