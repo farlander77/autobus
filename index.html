@@ -60,7 +60,8 @@
     /* ===== 懸浮 FAQ 按鈕 ===== */
     .faq-float{
       position:fixed;           /* 固定在視窗上，不隨捲動 */
-      right:0px; bottom:200px;  /* 初始位置 */
+      right:5px;
+      bottom:200px;  /* 初始位置 */
       z-index:9999;
       touch-action:none;        /* 手機拖曳時不觸發頁面捲動 */
       user-select:none; -webkit-user-select:none;
@@ -157,7 +158,7 @@ var swiper = new Swiper(".bannerSwiper", {
   var el = document.getElementById('faqFloat');
   if (!el) return;
 
-  var MARGIN = 0;        // 距離邊緣的間距
+  var MARGIN = 5;        // 距離邊緣的間距
   var DRAG_THRESHOLD = 5; // 移動超過幾 px 才算拖曳（避免點擊誤判）
   var OVERSHOOT = 10;     // 拖曳時可超出邊界的距離
   var pressing = false, moved = false;
