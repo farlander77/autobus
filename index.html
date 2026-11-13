@@ -157,9 +157,9 @@ var swiper = new Swiper(".bannerSwiper", {
   var el = document.getElementById('faqFloat');
   if (!el) return;
 
-  var MARGIN = -10;        // 距離邊緣的間距
+  var MARGIN = 0;        // 距離邊緣的間距
   var DRAG_THRESHOLD = 5; // 移動超過幾 px 才算拖曳（避免點擊誤判）
-  var OVERSHOOT = 30;     // 拖曳時可超出邊界的距離
+  var OVERSHOOT = 10;     // 拖曳時可超出邊界的距離
   var pressing = false, moved = false;
   var startX, startY, offX, offY;
 
