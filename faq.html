@@ -119,6 +119,33 @@
     @media (prefers-reduced-motion: reduce){
       .faq-a,.faq-arrow,.faq-item{transition:none}
     }
+        
+        
+    /* Q12 站牌列表 */
+    .faq-a-content{flex:1;min-width:0}
+    .faq-a-content > p{margin:0 0 10px}
+    .stop-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .stop-item{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 10px 10px 12px;border-radius:10px;background:#f4f7fc;
+    }
+    .stop-no{
+      flex:0 0 auto;min-width:30px;height:30px;padding:0 6px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background:var(--faq-blue);color:#fff;font-size:13px;font-weight:900;
+    }
+    .sign-no{ width: 20px; height: 20px; font-size: 14px; margin-top: -2px; margin-right: 2px; color: #fff; background: #2765af; border-radius: 20px; display: inline-block; text-align: center;}
+    .stop-name{flex:1;min-width:0;font-size:15px;font-weight:700;line-height:1.4;color:var(--faq-text)}
+    .stop-name small{display:block;font-size:12px;font-weight:400;color:#888}
+    .faq-a-body a.stop-nav{
+      flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;
+      height:34px;padding:0 12px;border-radius:999px;
+      background:var(--faq-purple);color:#fff;
+      font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;
+      box-shadow:0 2px 6px rgba(143,65,255,.3);
+      transition:transform .15s, box-shadow .15s;
+    }
+    .faq-a-body a.stop-nav:active{transform:scale(.95);box-shadow:none}
 
     </style>
     
@@ -250,7 +277,7 @@
         </div></div></div>
       </li>
 
-      <li class="faq-item">
+        <li class="faq-item">
         <button type="button" class="faq-q" aria-expanded="false">
           <span class="faq-badge">Q10</span>
           <span class="faq-q-text">嬰兒車或輪椅可以搭乘嗎？</span>
@@ -261,6 +288,60 @@
           <p>現階段因車內空間限制，<strong>無法提供嬰兒車及輪椅搭乘服務</strong>。有特殊乘車需求，請在預約前向客服確認。</p>
         </div></div></div>
       </li>
+        
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q11</span>
+          <span class="faq-q-text">預約何時開放？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+            <p>平台開放預約<strong>未來兩週內之搭乘日期，每日中午12:00新增開放一天的預約班次</strong>。例如：11月13日中午12:00起，開放預約11月26日之搭乘班次。</p>
+        </div></div></div>
+      </li>
+        
+     <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q12</span>
+          <span class="faq-q-text">站牌在哪裡？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <div class="faq-a-content">
+            <p>點擊「地圖」即可在 Google 地圖上查看站牌位置。</p>
+            <ul class="stop-list">
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">1</span><span class="sign-no">7</span>水湳轉運中心<small>起訖站・1 號月台</small></span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.197624,120.652709" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">2</span>臺中中央公園（去）</span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.181377,120.656155" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">3</span>捷運文華高中站</span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.171560,120.660544" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">4</span>臺中中央公園（返）</span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.181263,120.656243" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">5</span>臺中綠美圖</span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.193135,120.655239" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+              <li class="stop-item">
+                <span class="stop-name"><span class="sign-no">6</span>黎明經貿路口<small>會展中心</small></span>
+                <a class="stop-nav" href="https://www.google.com/maps?q=24.195592,120.654557" target="_blank" rel="noopener"><i class="fa fa-map-marker"></i>地圖</a>
+              </li>
+            </ul>
+          </div>
+        </div></div></div>
+      </li>
+        
+
 
     </ul>
 
