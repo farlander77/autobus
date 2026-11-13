@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en"><head >
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1,requiresActiveX=true" />
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="css/css.css" />
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <title>水湳號自駕巴士預約系統平台</title>
+
+    <script type="text/javascript">
+	$(document).ready(function() {
+	$('body').hide().fadeIn(500);
+	});
+	</script>
+    <style>
+    .map-box{position:relative;width:100%;aspect-ratio:1692/2007}
+    .map-box iframe{width:100%;height:100%;border:0;pointer-events:none}
+    .map-switch{position:absolute;top:12px;right:12px;display:flex;gap:4px;padding:4px;
+    border-radius:999px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+    .map-switch button{width:66px;height:32px;border:0;border-radius:999px;cursor:pointer;
+    font-size:15px;font-weight:900;background:transparent;color:#2765af}
+    .map-switch button[data-mode="full"].on{background:#2765af;color:#fff}
+    .map-switch button[data-mode="int"].on{background:#8f41ff;color:#fff}
+
+    /* ===== 常見問題 FAQ ===== */
+    .faq-wrap{
+      --faq-blue:#2765af;
+      --faq-purple:#8f41ff;
+      --faq-pink:#3a95fc;
+      --faq-text:#333;
+      --faq-sub:#555;
+      position:relative; z-index:2;
+      box-sizing:border-box;
+      width:100%;
+      padding:20px 16px 28px;
+      font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      color:var(--faq-text);
+    }
+    .faq-wrap *{box-sizing:border-box}
+
+    .faq-title{text-align:center;margin:0 0 18px; display: flex; justify-content: center; align-items: center;}
+    .faq-title small{
+      display:inline-block; padding:5px 10px;margin-bottom:8px;border-radius:999px;
+      background:var(--faq-blue);color:#fff;font-size:13px;font-weight:700;letter-spacing:.15em
+    }
+    
+    .faq-title p{margin:6px 0 0;font-size:14px;color:var(--faq-sub)}
+
+    .faq-tools{display:flex;justify-content:space-between; margin-bottom:10px}
+    .faq-tools .title{  display: flex; align-items: flex-end; font-size:24px; font-weight:900; color:var(--faq-blue); letter-spacing:.05em}
+        
+    .faq-tools .title small{
+      display:inline-block;padding:5px 10px; margin-left: 5px; border-radius:999px;
+      background:var(--faq-blue);color:#fff;font-size:13px;font-weight:700;letter-spacing:.15em
+    }
+    .faq-toggle-all{
+      border:0;background:none;cursor:pointer;padding:4px 2px;
+      font-size:14px;font-weight:700;color:var(--faq-blue)
+    }
+    .faq-toggle-all i{margin-left:4px}
+
+    .faq-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+
+    .faq-item{
+      background:#fff;border-radius:14px;overflow:hidden;
+      box-shadow:0 2px 10px rgba(39,101,175,.12);
+      border:1.5px solid transparent;
+      transition:border-color .25s, box-shadow .25s;
+    }
+    .faq-item.open{border-color:var(--faq-blue);box-shadow:0 4px 16px rgba(39,101,175,.2)}
+
+    .faq-q{
+      width:100%;display:flex;align-items:flex-start;gap:10px;
+      padding:14px 14px 14px 12px;border:0;background:none;cursor:pointer;text-align:left;
+      font:inherit;font-size:16px;font-weight:700;line-height:1.5;color:var(--faq-text);
+    }
+    .faq-q:focus-visible{outline:2px solid var(--faq-purple);outline-offset:-2px;border-radius:14px}
+
+    .faq-badge{
+      flex:0 0 auto;min-width:38px;height:26px;padding:0 6px;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      background:var(--faq-blue);color:#fff;font-size:13px;font-weight:900;margin-top:1px
+    }
+    .faq-q-text{flex:1}
+    .faq-arrow{
+      flex:0 0 auto;width:26px;height:26px;border-radius:50%;margin-top:1px;
+      display:flex;align-items:center;justify-content:center;
+      background:#eef3fa;color:var(--faq-blue);font-size:14px;
+      transition:transform .3s, background .3s, color .3s;
+    }
+    .faq-item.open .faq-arrow{transform:rotate(180deg);background:var(--faq-blue);color:#fff}
+
+    /* 展開動畫：grid 0fr → 1fr */
+    .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+    .faq-item.open .faq-a{grid-template-rows:1fr}
+    .faq-a-inner{overflow:hidden}
+    .faq-a-body{
+      display:flex;gap:10px;margin:0 14px 14px 12px;padding-top:12px;
+      border-top:1px dashed #cfdcee;
+      font-size:15px;line-height:1.75;color:var(--faq-sub)
+    }
+    .faq-a-body .faq-badge{background:var(--faq-pink)}
+    .faq-a-body p{margin:0;flex:1}
+    .faq-a-body strong{color:var(--faq-blue)}
+    .faq-a-body a{color:var(--faq-purple);font-weight:700;word-break:break-all}
+
+    .faq-note{margin:16px 0 0;text-align:center;font-size:13px;color:var(--faq-sub)}
+    .faq-note a{color:var(--faq-blue);font-weight:700;text-decoration:none}
+
+    @media (prefers-reduced-motion: reduce){
+      .faq-a,.faq-arrow,.faq-item{transition:none}
+    }
+
+    </style>
+    
+</head>
+<body>
+
+<div class="page">
+
+<header class="header">
+  <img src="images/logo.png" alt=""/>
+</header>
+<div class="content">
+<div class="banner">
+
+  <section class="faq-wrap" aria-labelledby="faqTitle">
+
+    <div class="faq-tools">
+      <span class="title">常見問題 <small>FAQ</small></span>
+      <button type="button" class="faq-toggle-all" id="faqToggleAll">全部展開<i class="fa fa-angle-down"></i></button>
+    </div>
+
+    <ul class="faq-list" id="faqList">
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q1</span>
+          <span class="faq-q-text">為什麼找不到可預約的班次？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>請先確認日期及車種。班次可能已額滿、尚未開放或為團體洽詢班次；<strong>目前沒有候補</strong>，可改選其他班次。開放時間請依首頁公告。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q2</span>
+          <span class="faq-q-text">團體預約需要幾人？怎麼申請？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>每班次可申請 <strong>5～9 人</strong>。選擇班次後點「團體申請」，填寫 Google 表單，提供搭乘需求及聯絡資料。客服電話不受理代訂。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q3</span>
+          <span class="faq-q-text">團體申請多久回覆？如何確認成功？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>送出申請後，將於<strong>兩天內以電子郵件回覆</strong>。送出申請或收到申請副本，均不代表預約成功；是否預約成功，請以回覆信件內容確認。未收到回覆請先查垃圾郵件匣。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q4</span>
+          <span class="faq-q-text">全程車與區間車有什麼差別？各搭多久？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p><strong>全程車約 40 分鐘</strong>，會到捷運文華高中站；<strong>區間車約 20 分鐘</strong>，行經水湳轉運中心、綠美圖及會展中心，不到捷運站。實際車程依路況而定。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q5</span>
+          <span class="faq-q-text">搭乘要付費嗎？可以現場直接上車嗎？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p><strong>免費、全預約制</strong>，不需刷卡或付現。須先完成預約，上車出示該日期及班次有效的 QR Code，經驗證後搭乘。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q6</span>
+          <span class="faq-q-text">可以提前多久預約？最晚何時截止？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>可預約<strong>未來兩週內</strong>班次。當天若仍有名額，最晚可於<strong>發車前 20 分鐘</strong>完成預約；個別班次開放時間以平台公告及顯示為準。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q7</span>
+          <span class="faq-q-text">預約後可以取消或改期嗎？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>一般預約請登入平台，取消原預約後重新預約。團體申請如需修改或取消，請來信 <a href="mailto:tcbus@kingwaytek.com">tcbus@kingwaytek.com</a>，提供團體名稱、搭乘日期及班次，避免重複填表。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q8</span>
+          <span class="faq-q-text">要提前多久到站？在哪裡上車？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>建議<strong>提前 5～10 分鐘</strong>到站。水湳轉運中心請至 <strong>1 號月台</strong>；其他站依預約方向候車，中央公園去程與返程站牌位置不同。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q9</span>
+          <span class="faq-q-text">週末、國定假日有營運嗎？停駛如何通知？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>僅<strong>週一至週五</strong>營運，週末及國定假日不營運。班次異動於平台或官網公告，臨時調整並以簡訊通知預約乘客。</p>
+        </div></div></div>
+      </li>
+
+      <li class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span class="faq-badge">Q10</span>
+          <span class="faq-q-text">嬰兒車或輪椅可以搭乘嗎？</span>
+          <span class="faq-arrow"><i class="fa fa-angle-down"></i></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-body">
+          <span class="faq-badge">A</span>
+          <p>現階段因車內空間限制，<strong>無法提供嬰兒車及輪椅搭乘服務</strong>。有特殊乘車需求，請在預約前向客服確認。</p>
+        </div></div></div>
+      </li>
+
+    </ul>
+
+    <p class="faq-note">還有其他問題？請洽客服專線 <a href="tel:0223630582">02-23630582</a></p>
+  </section>
+
+</div>
+
+    
+<div class="build1"><img src="images/build1.png" width="300"  alt=""/></div>
+<div class="build2"><img src="images/build2.png" width="400"  alt=""/></div>
+<div class="build3"><img src="images/build3.png" width="300"  alt=""/></div>
+</div>
+
+<div class="footer">
+
+<div class="btn-area">
+	<button class="btn-back" onClick="location.href='index.html'">返回</button>
+</div>
+<div class="organizers">
+<span>主辦單位：臺中市政府交通局 ｜ 執行單位：勤崴國際</span>
+<span class="service-info">客服專線：02-23630582 ( 週一到週五10:00-12:00、13:30-17:00 )</span>
+</div>
+</div>
+
+</div>
+
+<script>
+/* ===== FAQ 手風琴 ===== */
+(function () {
+  var ONLY_ONE_OPEN = true; // true：一次只展開一題；false：可同時展開多題
+  var items = document.querySelectorAll('#faqList .faq-item');
+  var toggleAllBtn = document.getElementById('faqToggleAll');
+
+  function setOpen(item, open) {
+    item.classList.toggle('open', open);
+    item.querySelector('.faq-q').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function refreshToggleAll() {
+    var allOpen = Array.prototype.every.call(items, function (it) {
+      return it.classList.contains('open');
+    });
+    toggleAllBtn.innerHTML = allOpen
+      ? '全部收合<i class="fa fa-angle-up"></i>'
+      : '全部展開<i class="fa fa-angle-down"></i>';
+    toggleAllBtn.dataset.state = allOpen ? 'open' : 'closed';
+  }
+
+  items.forEach(function (item) {
+    item.querySelector('.faq-q').addEventListener('click', function () {
+      var willOpen = !item.classList.contains('open');
+      if (ONLY_ONE_OPEN && willOpen) {
+        items.forEach(function (other) { if (other !== item) setOpen(other, false); });
+      }
+      setOpen(item, willOpen);
+      refreshToggleAll();
+    });
+  });
+
+  toggleAllBtn.addEventListener('click', function () {
+    var open = toggleAllBtn.dataset.state !== 'open';
+    items.forEach(function (it) { setOpen(it, open); });
+    refreshToggleAll();
+  });
+
+  refreshToggleAll();
+})();
+</script>
+</body>
+</html>
