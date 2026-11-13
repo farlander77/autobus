@@ -60,7 +60,7 @@
     /* ===== 懸浮 FAQ 按鈕 ===== */
     .faq-float{
       position:fixed;           /* 固定在視窗上，不隨捲動 */
-      right:0px; bottom:50px;  /* 初始位置 */
+      right:0px; bottom:200px;  /* 初始位置 */
       z-index:9999;
       touch-action:none;        /* 手機拖曳時不觸發頁面捲動 */
       user-select:none; -webkit-user-select:none;
@@ -77,7 +77,7 @@
 <body>
 
 <!-- 懸浮 FAQ：放在 body 第一層，避免被父層的 transform / overflow 影響 fixed 定位 -->
-<div class="faq-float" id="faqFloat" data-href="faq.html" role="button" tabindex="0" aria-label="常見問題"><img src="images/faq.png" width="120" alt="FAQ" draggable="false"/></div>
+<div class="faq-float" id="faqFloat" data-href="faq.html" role="button" tabindex="0" aria-label="常見問題"><img src="images/faq.svg" width="110" alt="FAQ" draggable="false"/></div>
 
 <div class="page">
 
