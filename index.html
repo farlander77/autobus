@@ -31,31 +31,6 @@
     .map-switch button[data-mode="full"].on{background:#2765af;color:#fff}
     .map-switch button[data-mode="int"].on{background:#8f41ff;color:#fff}
         
-    
-      .marquee{
-  width:80%;
-  overflow:hidden;
-  padding:0 0 0px 0;
-    position: relative;
-    top: -10px;
-    left: 10%;
-}
-
-.marquee-text{
-  display:inline-block;
-  white-space:nowrap;
-  padding-left:100%;
-  animation: marquee 20s linear infinite;
-}
-
-@keyframes marquee{
-  from{
-    transform: translateX(0);
-  }
-  to{
-    transform: translateX(-100%);
-  }
-}
 
     /* ===== 懸浮 FAQ 按鈕 ===== */
     .faq-float{
@@ -77,8 +52,7 @@
 </head>
 <body>
 
-<!-- 懸浮 FAQ：放在 body 第一層，避免被父層的 transform / overflow 影響 fixed 定位 -->
-<div class="faq-float" id="faqFloat" data-href="faq.html" role="button" tabindex="0" aria-label="常見問題"><img src="images/faq-02.png" width="60" alt="FAQ" draggable="false"/></div>
+<div class="faq-float" id="faqFloat" data-href="faq.html" role="button" tabindex="0" aria-label="常見問題"><img src="images/faq.png" width="60" alt="FAQ" draggable="false"/></div>
 
 <div class="page">
 
