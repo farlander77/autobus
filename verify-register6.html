@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head >
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1,requiresActiveX=true" />
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="css/css.css" />
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <title>水湳號自駕巴士預約系統平台</title>
+
+    <style>
+    /* ===== 重發按鈕：外框線條繞行倒數 ===== */
+    .btn-resend.ring-btn,
+    .btn-resend.ring-btn:disabled {
+        /* 不論 css.css 怎麼設定，倒數中的按鈕都要顯示 */
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative;
+        padding: 10px 20px;
+        min-height: 40px;
+        font-size: 16px;
+        --bg-counting: #eef1f5;           /* 倒數中的底色 */
+        --bg-ready: #5D7CA8;              /* 倒數完成（可按）的底色 */
+        --text-counting: #1a6fc4;         /* 倒數中的文字顏色 */
+        --text-ready: #ffffff;            /* 倒數完成的文字顏色 */
+        color: var(--text-ready);
+        background: var(--bg-ready);
+        transition: background-color .3s ease, color .3s ease;
+        border: none !important;          /* 由 SVG 畫外框 */
+        border-radius: 8px;
+        background-clip: padding-box;
+        --ring-radius: 8px;               /* 外框圓角，可依設計調整 */
+        --ring-width: 2px;                /* 線條粗細 */
+        --ring-color: currentColor;       /* 線條顏色，預設跟文字同色 */
+        --ring-duration: 10s;             /* JS 會依秒數覆寫 */
+    }
+    .btn-resend.ring-btn .ring {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+    }
+    .btn-resend.ring-btn .ring rect {
+        x: calc(var(--ring-width) / 2);
+        y: calc(var(--ring-width) / 2);
+        width: calc(100% - var(--ring-width));
+        height: calc(100% - var(--ring-width));
+        rx: var(--ring-radius);
+        ry: var(--ring-radius);
+        fill: none;
+        stroke: var(--ring-color);
+        stroke-width: var(--ring-width);
+    }
+    /* 底層淡色軌道 */
+    .btn-resend.ring-btn .ring-track { opacity: .2; }
+    /* 會繞著跑、逐漸縮短的線 */
+    .btn-resend.ring-btn .ring-progress {
+        stroke-linecap: round;
+        stroke-dasharray: 100 100;
+        stroke-dashoffset: 0;
+    }
+    .btn-resend.ring-btn.counting .ring-progress {
+        animation: ring-run var(--ring-duration) linear forwards;
+    }
+    @keyframes ring-run {
+        from { stroke-dashoffset: 100; }    /* 從沒有線開始 */
+        to   { stroke-dashoffset: 0; }      /* 線條沿外框逐漸長滿一圈 */
+    }
+    .btn-resend.ring-btn.counting {
+        background: var(--bg-counting) !important;
+        color: var(--text-counting) !important;
+    }
+    .btn-resend.ring-btn:not(.counting) {
+        background: var(--bg-ready) !important;
+        color: var(--text-ready) !important;
+        --ring-color: var(--bg-ready);    /* 完成時外框與底色一致 */
+    }
+    .btn-resend.ring-btn:not(:disabled) { cursor: pointer; }
+    </style>
+
+    <script type="text/javascript">
+	$(document).ready(function() {
+	$('body').hide().fadeIn(500);
+	});
+	</script>
+</head>
+<body>
+<div class="page">
+
+<header class="header">
+  <img src="images/logo.png" alt=""/>
+</header>
+	
+<div class="content">
+    
+    <div class="resend-title">請輸入 6 位數字驗證碼</div>
+    
+    <div class="otp-inputs" id="otp-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    </div>
+    <div class="resend-container">
+   
+    <button id="resend-btn" class="btn-resend ring-btn" disabled>
+        <svg class="ring" aria-hidden="true">
+            <rect class="ring-track"></rect>
+            <rect class="ring-progress" pathLength="100"></rect>
+        </svg>
+        <span class="label">重發認證碼</span>
+    </button>
+    </div>
+    
+    <div class="build1"><img src="images/build1.png" width="300"  alt=""/></div>
+    <div class="build2"><img src="images/build2.png" width="400"  alt=""/></div>
+    <div class="build3"><img src="images/build3.png" width="300"  alt=""/></div>
+</div>
+<div class="footer">	
+<div class="btn-area">
+	<button class="btn-back" onClick="location.href='register.html'">返回</button>
+	<button class="btn-confirm" onClick="location.href='register-success.html'">認證</button>
+</div>
+<div class="organizers">
+<span>主辦單位：臺中市政府交通局 ｜ 執行單位：勤崴國際</span>
+<span class="service-info">服務電話：02-2363-5445 ｜ 服務時間：週一到週五 <span class="service-time">(10:00 - 17:00)</span></span>
+</div>
+</div>
+</div>
+    
+<script>
+    
+    
+const COUNTDOWN_SECONDS = 10; // 倒數秒數，正式上線可改為 60
+
+const resendBtn = document.getElementById('resend-btn');
+
+let countdownTime = COUNTDOWN_SECONDS;
+let timer = null;
+
+// 開始倒數計時的函式
+function startCountdown() {
+    countdownTime = COUNTDOWN_SECONDS; // 重設秒數
+    resendBtn.disabled = true; // 禁用按鈕
+
+    // 重新啟動外框繞行動畫
+    resendBtn.style.setProperty('--ring-duration', COUNTDOWN_SECONDS + 's');
+    resendBtn.classList.remove('counting');
+    void resendBtn.offsetWidth; // 強制重繪，讓動畫從頭開始
+    resendBtn.classList.add('counting');
+
+    // 清除舊的計時器（如果有的話）
+    if (timer) clearInterval(timer);
+
+    timer = setInterval(() => {
+        countdownTime--;
+
+        if (countdownTime <= 0) {
+            clearInterval(timer);
+            resendBtn.disabled = false; // 恢復按鈕
+            resendBtn.classList.remove('counting'); // 外框恢復完整
+        }
+    }, 1000);
+}
+
+// 監聽重發按鈕點擊
+resendBtn.addEventListener('click', () => {
+    // 這裡通常會呼叫 API 發送簡訊
+    console.log("正在重新發送驗證碼...");
+    
+    // 模擬 API 呼叫後重啟倒數
+    startCountdown();
+});
+
+// 頁面載入後自動開始第一次倒數
+window.onload = startCountdown;
+    
+    
+// script.js
+const inputs = document.querySelectorAll('#otp-inputs input');
+const verifyBtn = document.getElementById('verify-btn');
+
+inputs.forEach((input, index) => {
+    // 監聽輸入事件
+    input.addEventListener('input', (e) => {
+        const value = e.target.value;
+        
+        // 確保只能輸入數字
+        if (value && !/^\d+$/.test(value)) {
+            e.target.value = '';
+            return;
+        }
+
+        // 如果有輸入，自動跳下一格
+        if (value && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+
+        checkCompletion();
+    });
+
+    // 監聽退格鍵 (Backspace)
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) {
+            inputs[index - 1].focus();
+        }
+    });
+
+    // 支援貼上功能
+    input.addEventListener('paste', (e) => {
+        const data = e.clipboardData.getData('text').slice(0, 6);
+        if (/^\d+$/.test(data)) {
+            data.split('').forEach((char, i) => {
+                if (inputs[i]) inputs[i].value = char;
+            });
+            inputs[Math.min(data.length, 5)].focus();
+            checkCompletion();
+        }
+        e.preventDefault();
+    });
+});
+
+function checkCompletion() {
+    const isFull = Array.from(inputs).every(input => input.value !== '');
+    if (verifyBtn) verifyBtn.disabled = !isFull;
+}
+
+if (verifyBtn) {
+    verifyBtn.addEventListener('click', () => {
+        const code = Array.from(inputs).map(i => i.value).join('');
+        alert(`驗證碼已送出: ${code}`);
+    });
+}
+
+</script>
+    
+</body>
+</html>
